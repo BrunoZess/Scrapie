@@ -1,32 +1,29 @@
 """
 fetch_deals.py
 
-Busca os jogos em promoção usando a API pública e gratuita da CheapShark
-(https://apidocs.cheapshark.com/) e gera um arquivo index.html estático
+Busca os jogos em promoção usando a API gratuita da CheapShark e gera um arquivo index.html estático
 com a lista de ofertas, pronto para ser publicado no GitHub Pages.
 
-Não precisa de chave de API (API key) para usar a CheapShark.
 """
 
 import requests
 from datetime import datetime
 
-# Endpoint da API que retorna as promoções (deals) ordenadas por % de desconto
+# Endpoint da API que retorna as promoções
 API_URL = "https://www.cheapshark.com/api/1.0/deals"
 
-# Cotação do dólar (API pública brasileira, sem necessidade de chave)
+# Cotação do dólar
 EXCHANGE_API_URL = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
 
-# Loja buscada: apenas Steam (storeID=1)
-# Lista completa de storeIDs em https://www.cheapshark.com/api/1.0/stores
+# Loja buscada: apenas Steam 
 STORE_ID = 1
 STORE_NAME = "Steam"
 
-# Quantas páginas buscar (cada página traz até 60 jogos = PAGE_SIZE máximo da API)
+# Quantas páginas buscar
 PAGE_SIZE = 60
-NUM_PAGES = 4  # 4 páginas x 60 = até 240 jogos
+NUM_PAGES = 4  
 
-# Parâmetros comuns da busca — dá pra customizar
+# Parâmetros comuns da busca
 BASE_PARAMS = {
     "storeID": STORE_ID,
     "upperPrice": 60,    # preço máximo em dólar
@@ -36,7 +33,7 @@ BASE_PARAMS = {
 
 HEADERS = {
     # A CheapShark exige um User-Agent descritivo nas requisições
-    "User-Agent": "GameDealsSite/1.0 (github.com project; contato: seuemail@exemplo.com)"
+    "User-Agent": "GameDealsSite/1.0 (github.com project; contato: lixoboey2@gmail.com)"
 }
 
 
@@ -53,7 +50,7 @@ def fetch_exchange_rate():
 
 
 def fetch_all_deals():
-    """Busca várias páginas de promoções da Steam na API da CheapShark."""
+    """Busca várias páginas de promoções da Steam na API"""
     all_deals = []
     seen_ids = set()
     for page in range(NUM_PAGES):
@@ -395,7 +392,7 @@ def build_html(deals, usd_to_brl):
 <body>
     <header>
         <h1>🎮 Promoções de Jogos</h1>
-        <p class="updated">Atualizado em {updated_at} · dados via CheapShark API · US$ 1 = R$ {usd_to_brl:.2f}</p>
+        <p class="updated">Atualizado em {updated_at} 
     </header>
 
     <div class="controls">

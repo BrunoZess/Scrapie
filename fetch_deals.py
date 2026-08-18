@@ -22,10 +22,18 @@ PARAMS = {
     "sortBy": "Savings", # ordena pelo maior desconto
 }
 
+HEADERS = {
+    # A CheapShark exige um User-Agent descritivo nas requisições
+    "User-Agent": "GameDealsSite/1.0 (github.com project; contato: seuemail@exemplo.com)"
+}
+
 
 def fetch_deals():
     """Busca as promoções na API da CheapShark."""
-    response = requests.get(API_URL, params=PARAMS, timeout=15)
+    response = requests.get(API_URL, params=PARAMS, headers=HEADERS, timeout=15)
+    if not response.ok:
+        # Mostra o corpo da resposta de erro para facilitar o diagnóstico
+        print(f"Erro {response.status_code} da API. Resposta: {response.text}")
     response.raise_for_status()
     return response.json()
 

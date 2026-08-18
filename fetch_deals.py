@@ -17,19 +17,20 @@ API_URL = "https://www.cheapshark.com/api/1.0/deals"
 # Cotação do dólar (API pública brasileira, sem necessidade de chave)
 EXCHANGE_API_URL = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
 
-# Lojas que serão buscadas: nome de exibição -> storeID da CheapShark
+# Loja buscada: apenas Steam (storeID=1)
 # Lista completa de storeIDs em https://www.cheapshark.com/api/1.0/stores
-STORES = {
-    "Steam": 1,
-    "GOG": 7,
-    "Humble Store": 11,
-    "Epic Games": 25,
-}
+STORE_ID = 1
+STORE_NAME = "Steam"
+
+# Quantas páginas buscar (cada página traz até 60 jogos = PAGE_SIZE máximo da API)
+PAGE_SIZE = 60
+NUM_PAGES = 4  # 4 páginas x 60 = até 240 jogos
 
 # Parâmetros comuns da busca — dá pra customizar
 BASE_PARAMS = {
-    "upperPrice": 50,    # preço máximo em dólar
-    "pageSize": 24,      # quantidade de jogos por loja
+    "storeID": STORE_ID,
+    "upperPrice": 60,    # preço máximo em dólar
+    "pageSize": PAGE_SIZE,
     "sortBy": "Savings", # ordena pelo maior desconto
 }
 
@@ -51,24 +52,25 @@ def fetch_exchange_rate():
         return 5.50  # valor aproximado de fallback
 
 
-def fetch_deals_for_store(store_name, store_id):
-    """Busca as promoções de uma loja específica na API da CheapShark."""
-    params = {**BASE_PARAMS, "storeID": store_id}
-    response = requests.get(API_URL, params=params, headers=HEADERS, timeout=15)
-    if not response.ok:
-        print(f"Erro {response.status_code} da API para {store_name}. Resposta: {response.text}")
-    response.raise_for_status()
-    deals = response.json()
-    for deal in deals:
-        deal["_store"] = store_name
-    return deals
-
-
 def fetch_all_deals():
-    """Busca as promoções de todas as lojas configuradas."""
+    """Busca várias páginas de promoções da Steam na API da CheapShark."""
     all_deals = []
-    for store_name, store_id in STORES.items():
-        all_deals.extend(fetch_deals_for_store(store_name, store_id))
+    seen_ids = set()
+    for page in range(NUM_PAGES):
+        params = {**BASE_PARAMS, "pageNumber": page}
+        response = requests.get(API_URL, params=params, headers=HEADERS, timeout=15)
+        if not response.ok:
+            print(f"Erro {response.status_code} da API na página {page}. Resposta: {response.text}")
+        response.raise_for_status()
+        page_deals = response.json()
+        if not page_deals:
+            break  # acabaram os resultados
+        for deal in page_deals:
+            deal_id = deal.get("dealID")
+            if deal_id and deal_id not in seen_ids:
+                seen_ids.add(deal_id)
+                deal["_store"] = STORE_NAME
+                all_deals.append(deal)
     return all_deals
 
 
@@ -84,20 +86,25 @@ def build_html(deals, usd_to_brl):
         thumb = deal.get("thumb", "")
         deal_id = deal.get("dealID", "")
         store = deal.get("_store", "Outro")
+        metacritic = deal.get("metacriticScore") or 0
         link = f"https://www.cheapshark.com/redirect?dealID={deal_id}"
 
         sale_price_brl = sale_price_usd * usd_to_brl
         normal_price_brl = normal_price_usd * usd_to_brl
 
+        metacritic_badge = (
+            f'<span class="meta-badge">Metacritic {metacritic}</span>' if metacritic else ""
+        )
+
         rows += f"""
-        <div class="card" data-store="{store}" data-discount="{savings:.0f}" data-price="{sale_price_brl:.2f}" data-title="{title_attr}" style="animation-delay: {idx * 0.03:.2f}s">
+        <div class="card" data-store="{store}" data-discount="{savings:.0f}" data-price="{sale_price_brl:.2f}" data-title="{title_attr}" data-metacritic="{metacritic}" style="animation-delay: {idx * 0.03:.2f}s">
             <div class="thumb-wrap">
                 <img src="{thumb}" alt="{title}" loading="lazy">
                 <span class="badge">-{savings:.0f}%</span>
-                <span class="store-tag">{store}</span>
             </div>
             <div class="info">
                 <h3>{title}</h3>
+                {metacritic_badge}
                 <p class="price">
                     <span class="old">R$ {normal_price_brl:.2f}</span>
                     <span class="new">R$ {sale_price_brl:.2f}</span>
@@ -108,10 +115,6 @@ def build_html(deals, usd_to_brl):
         """
 
     updated_at = datetime.now().strftime("%d/%m/%Y %H:%M")
-    store_tabs = "".join(
-        f'<button class="tab" data-filter="{name}">{name}</button>'
-        for name in STORES.keys()
-    )
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-br">
@@ -347,6 +350,37 @@ def build_html(deals, usd_to_brl):
         opacity: 0;
         animation: fadeInUp 0.5s ease forwards;
     }}
+    .meta-badge {{
+        display: inline-block;
+        background: rgba(74,222,128,0.15);
+        color: var(--green);
+        border: 1px solid rgba(74,222,128,0.3);
+        font-size: 0.75em;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 999px;
+        margin-bottom: 10px;
+        width: fit-content;
+    }}
+    .famous-toggle {{
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text);
+        font-size: 0.9em;
+        cursor: pointer;
+        background: var(--card);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 8px 16px;
+        border-radius: 999px;
+        user-select: none;
+    }}
+    .famous-toggle input {{
+        accent-color: var(--accent);
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }}
     @keyframes fadeInUp {{
         from {{
             opacity: 0;
@@ -368,14 +402,17 @@ def build_html(deals, usd_to_brl):
         <div class="search-wrap">
             <input type="text" id="search" placeholder="Buscar jogo..." autocomplete="off">
         </div>
-        <button class="tab active" data-filter="all">Todas as lojas</button>
-        {store_tabs}
+        <label class="famous-toggle">
+            <input type="checkbox" id="famous-only">
+            Somente jogos famosos (Metacritic 75+)
+        </label>
         <div class="sort-wrap">
             <label for="sort">Ordenar por</label>
             <select id="sort">
                 <option value="discount">Maior desconto</option>
                 <option value="price-asc">Menor preço</option>
                 <option value="price-desc">Maior preço</option>
+                <option value="metacritic">Melhor avaliado</option>
             </select>
         </div>
     </div>
@@ -391,11 +428,10 @@ def build_html(deals, usd_to_brl):
 
     <script>
         const grid = document.getElementById('grid');
-        const tabs = document.querySelectorAll('.tab');
         const sortSelect = document.getElementById('sort');
         const searchInput = document.getElementById('search');
+        const famousOnly = document.getElementById('famous-only');
         const emptyMsg = document.getElementById('empty-msg');
-        let currentFilter = 'all';
         let searchTerm = '';
         let searchDebounce;
 
@@ -409,34 +445,28 @@ def build_html(deals, usd_to_brl):
                     return parseFloat(b.dataset.discount) - parseFloat(a.dataset.discount);
                 }} else if (sortBy === 'price-asc') {{
                     return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
-                }} else {{
+                }} else if (sortBy === 'price-desc') {{
                     return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                }} else {{
+                    return parseFloat(b.dataset.metacritic) - parseFloat(a.dataset.metacritic);
                 }}
             }});
             cards.forEach(card => grid.appendChild(card));
 
-            // Filtro por loja + busca por nome
+            // Busca por nome + filtro de famosos
             let visibleCount = 0;
             cards.forEach(card => {{
-                const matchesStore = currentFilter === 'all' || card.dataset.store === currentFilter;
                 const matchesSearch = card.dataset.title.includes(searchTerm);
-                const visible = matchesStore && matchesSearch;
+                const matchesFamous = !famousOnly.checked || parseFloat(card.dataset.metacritic) >= 75;
+                const visible = matchesSearch && matchesFamous;
                 card.style.display = visible ? '' : 'none';
                 if (visible) visibleCount++;
             }});
             emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
         }}
 
-        tabs.forEach(tab => {{
-            tab.addEventListener('click', () => {{
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                currentFilter = tab.dataset.filter;
-                applyFilterAndSort();
-            }});
-        }});
-
         sortSelect.addEventListener('change', applyFilterAndSort);
+        famousOnly.addEventListener('change', applyFilterAndSort);
 
         searchInput.addEventListener('input', () => {{
             clearTimeout(searchDebounce);

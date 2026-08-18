@@ -1,0 +1,36 @@
+name: Atualizar promoções
+
+on:
+  schedule:
+    # roda todo dia às 09:00 UTC (06:00 no horário de Brasília)
+    - cron: "0 9 * * *"
+  workflow_dispatch: # permite rodar manualmente pelo GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependências
+        run: pip install requests
+
+      - name: Buscar promoções e gerar HTML
+        run: python fetch_deals.py
+
+      - name: Commitar mudanças
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add index.html
+          git diff --staged --quiet || git commit -m "Atualiza promoções"
+          git push

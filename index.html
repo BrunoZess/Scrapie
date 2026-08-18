@@ -87,6 +87,18 @@
         border-radius: 999px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
+    .store-tag {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(0,0,0,0.55);
+        color: white;
+        font-size: 0.75em;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 999px;
+        backdrop-filter: blur(2px);
+    }
     .info {
         padding: 14px 16px 16px;
         flex: 1;
@@ -138,468 +150,1724 @@
         font-size: 0.8em;
         margin-top: 50px;
     }
+    .controls {
+        max-width: 1200px;
+        margin: 0 auto 28px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+    }
+    .tab {
+        background: var(--card);
+        color: var(--text);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 8px 16px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9em;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    .tab:hover {
+        border-color: var(--accent);
+    }
+    .tab.active {
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        border-color: transparent;
+        font-weight: 600;
+    }
+    .sort-wrap {
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .sort-wrap label {
+        color: var(--muted);
+        font-size: 0.85em;
+    }
+    select {
+        background: var(--card);
+        color: var(--text);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 8px 12px;
+        border-radius: 10px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9em;
+    }
+    .empty-msg {
+        text-align: center;
+        color: var(--muted);
+        margin-top: 40px;
+        display: none;
+    }
+    .search-wrap {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto 4px;
+        flex-basis: 100%;
+    }
+    #search {
+        width: 100%;
+        background: var(--card);
+        color: var(--text);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 10px 16px;
+        border-radius: 999px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95em;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }
+    #search:focus {
+        border-color: var(--accent);
+    }
+    #search::placeholder {
+        color: var(--muted);
+    }
+    .card {
+        opacity: 0;
+        animation: fadeInUp 0.5s ease forwards;
+    }
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+        to {
+            opacity: 1;
+        }
+    }
 </style>
 </head>
 <body>
     <header>
         <h1>🎮 Promoções de Jogos</h1>
-        <p class="updated">Atualizado em 18/08/2026 03:14 · dados via CheapShark API</p>
+        <p class="updated">Atualizado em 18/08/2026 03:20 · dados via CheapShark API · US$ 1 = R$ 5.50</p>
     </header>
-    <div class="grid">
+
+    <div class="controls">
+        <div class="search-wrap">
+            <input type="text" id="search" placeholder="Buscar jogo..." autocomplete="off">
+        </div>
+        <button class="tab active" data-filter="all">Todas as lojas</button>
+        <button class="tab" data-filter="Steam">Steam</button><button class="tab" data-filter="GOG">GOG</button><button class="tab" data-filter="Humble Store">Humble Store</button><button class="tab" data-filter="Epic Games">Epic Games</button>
+        <div class="sort-wrap">
+            <label for="sort">Ordenar por</label>
+            <select id="sort">
+                <option value="discount">Maior desconto</option>
+                <option value="price-asc">Menor preço</option>
+                <option value="price-desc">Maior preço</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="grid" id="grid">
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="95" data-price="4.07" data-title="aswang detective: the case of new york" style="animation-delay: 0.00s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2197170/capsule_231x87.jpg?t=1765895987" alt="Aswang Detective: The Case of New York" loading="lazy">
                 <span class="badge">-95%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Aswang Detective: The Case of New York</h3>
                 <p class="price">
-                    <span class="old">US$ 14.99</span>
-                    <span class="new">US$ 0.74</span>
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 4.07</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=bSRntVhHrZA6jT1Sp81I%2FJLSzs%2BlSWqYmBxC4vUZ6fM%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="95" data-price="4.07" data-title="via mortis" style="animation-delay: 0.03s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1987550/capsule_231x87.jpg?t=1766062163" alt="Via Mortis" loading="lazy">
                 <span class="badge">-95%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Via Mortis</h3>
                 <p class="price">
-                    <span class="old">US$ 14.99</span>
-                    <span class="new">US$ 0.74</span>
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 4.07</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=2dR0VnQ5DyGby2MaOjsDtkgH%2BuD7xm2%2F6KxOVsDYgLI%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="95" data-price="9.57" data-title="braveland pirate" style="animation-delay: 0.06s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/391490/capsule_231x87.jpg?t=1713375652" alt="Braveland Pirate" loading="lazy">
                 <span class="badge">-95%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Braveland Pirate</h3>
                 <p class="price">
-                    <span class="old">US$ 34.99</span>
-                    <span class="new">US$ 1.74</span>
+                    <span class="old">R$ 192.45</span>
+                    <span class="new">R$ 9.57</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=xCwta70aQk%2FFhHNAAXgWZQZgeCs5kiF892e5oYvh0jo%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="95" data-price="13.70" data-title="zombie army 4: dead war" style="animation-delay: 0.09s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/694280/capsule_231x87.jpg?t=1786965015" alt="Zombie Army 4: Dead War" loading="lazy">
                 <span class="badge">-95%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Zombie Army 4: Dead War</h3>
                 <p class="price">
-                    <span class="old">US$ 49.99</span>
-                    <span class="new">US$ 2.49</span>
+                    <span class="old">R$ 274.94</span>
+                    <span class="new">R$ 13.70</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=WNn7APgAQ9Qt08TxH%2BHXwdYqY0mPaQdpO2rFeaZ%2FzbI%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="5.89" data-title="electrician simulator" style="animation-delay: 0.12s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1080020/capsule_231x87.jpg?t=1786634826" alt="Electrician Simulator" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Electrician Simulator</h3>
                 <p class="price">
-                    <span class="old">US$ 17.99</span>
-                    <span class="new">US$ 1.07</span>
+                    <span class="old">R$ 98.94</span>
+                    <span class="new">R$ 5.89</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=TGiB4UBA9Z5j9qOCUb4do7isaAvaHmyEShJJppDoXBg%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="5.89" data-title="veteran racer" style="animation-delay: 0.15s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4129690/ce7c4801e9bec0ef334651487c87258dde415396/capsule_231x87.jpg?t=1764511477" alt="Veteran Racer" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Veteran Racer</h3>
                 <p class="price">
-                    <span class="old">US$ 17.99</span>
-                    <span class="new">US$ 1.07</span>
+                    <span class="old">R$ 98.94</span>
+                    <span class="new">R$ 5.89</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=yXuDFg1E%2FqZxkMZx%2B7gito1MzeB5Bj3Nh2HAc8XWGEY%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="6.21" data-title="castle flipper" style="animation-delay: 0.18s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/944250/capsule_231x87.jpg?t=1786634824" alt="Castle Flipper" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Castle Flipper</h3>
                 <p class="price">
-                    <span class="old">US$ 18.99</span>
-                    <span class="new">US$ 1.13</span>
+                    <span class="old">R$ 104.44</span>
+                    <span class="new">R$ 6.21</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=Wqk8prvQbZmoBGUnWMPM7OL00j%2FX%2Ffp3%2B%2Fm6n4JdMgA%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="6.54" data-title="ultimate fishing simulator" style="animation-delay: 0.21s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/468920/093b51c31ff6c429878c37fdb58965176b72a51c/capsule_231x87.jpg?t=1786793221" alt="Ultimate Fishing Simulator" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Ultimate Fishing Simulator</h3>
                 <p class="price">
-                    <span class="old">US$ 19.99</span>
-                    <span class="new">US$ 1.19</span>
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 6.54</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=nd%2BLV5QvFHArYpiRn0q5IIX3FoNTKNxXmtZ9B9AKeNs%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="6.54" data-title="giant machines 2017" style="animation-delay: 0.24s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/402750/capsule_231x87.jpg?t=1785915748" alt="Giant Machines 2017" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Giant Machines 2017</h3>
                 <p class="price">
-                    <span class="old">US$ 19.99</span>
-                    <span class="new">US$ 1.19</span>
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 6.54</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=dz07W8fwl%2BuS%2FLpLxvJDQFPG0phy4dQN%2BJoJRGsetB8%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="6.54" data-title="ships 2017" style="animation-delay: 0.27s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/439460/capsule_231x87.jpg?t=1786634296" alt="Ships 2017" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Ships 2017</h3>
                 <p class="price">
-                    <span class="old">US$ 19.99</span>
-                    <span class="new">US$ 1.19</span>
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 6.54</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=xuOnw6ncVLk991YJsFCoWQ6wi2%2FFefmVV9N1YbN31l8%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="6.54" data-title="farm expert 2017" style="animation-delay: 0.30s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/424590/capsule_231x87.jpg?t=1724957772" alt="Farm Expert 2017" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Farm Expert 2017</h3>
                 <p class="price">
-                    <span class="old">US$ 19.99</span>
-                    <span class="new">US$ 1.19</span>
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 6.54</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=9Cr7GsUUzjXw2ZRKY0QO2BkUKm%2F7T1xutQ7wcvW0lI4%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="6.54" data-title="deadliest catch: the game" style="animation-delay: 0.33s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/838630/capsule_231x87.jpg?t=1786634822" alt="Deadliest Catch: The Game" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Deadliest Catch: The Game</h3>
                 <p class="price">
-                    <span class="old">US$ 19.99</span>
-                    <span class="new">US$ 1.19</span>
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 6.54</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=7mg0tDmSQ9FFBwnCRQ8YUT32qPm8c98vXHs5QJsH2OA%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="6.54" data-title="this is the zodiac speaking" style="animation-delay: 0.36s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/907710/capsule_231x87.jpg?t=1786634297" alt="This is the Zodiac Speaking" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>This is the Zodiac Speaking</h3>
                 <p class="price">
-                    <span class="old">US$ 19.99</span>
-                    <span class="new">US$ 1.19</span>
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 6.54</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=LKNodWmFi4lqOy0M3wJ1AztJEUq77wY9rP0gG%2FWKRTQ%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="6.54" data-title="aircraft carrier survival" style="animation-delay: 0.39s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1021100/capsule_231x87.jpg?t=1786628153" alt="Aircraft Carrier Survival" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Aircraft Carrier Survival</h3>
                 <p class="price">
-                    <span class="old">US$ 19.99</span>
-                    <span class="new">US$ 1.19</span>
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 6.54</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=4AumuwBFlZzOhOwy1Xy3%2FJQ9HIbUyNzYStKOGtJnhKA%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="6.54" data-title="ultimate fishing simulator 2" style="animation-delay: 0.42s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1136380/capsule_231x87.jpg?t=1773435517" alt="Ultimate Fishing Simulator 2" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Ultimate Fishing Simulator 2</h3>
                 <p class="price">
-                    <span class="old">US$ 19.99</span>
-                    <span class="new">US$ 1.19</span>
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 6.54</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=IVcrwqPL%2B2z1sJ8vw5ZSSUXIpvqAkETOrQpTEqfKC9Y%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="94" data-price="8.20" data-title="biker garage: mechanic simulator" style="animation-delay: 0.45s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/989770/capsule_231x87.jpg?t=1770738260" alt="Biker Garage: Mechanic Simulator" loading="lazy">
                 <span class="badge">-94%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Biker Garage: Mechanic Simulator</h3>
                 <p class="price">
-                    <span class="old">US$ 24.99</span>
-                    <span class="new">US$ 1.49</span>
+                    <span class="old">R$ 137.44</span>
+                    <span class="new">R$ 8.20</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=dIprN6dylqA9wQJcEpWp06fFc5dG1%2B5akch8DDb7w%2FE%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="93" data-price="5.72" data-title="the way" style="animation-delay: 0.48s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/311010/capsule_231x87.jpg?t=1724959391" alt="The Way" loading="lazy">
                 <span class="badge">-93%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>The Way</h3>
                 <p class="price">
-                    <span class="old">US$ 14.99</span>
-                    <span class="new">US$ 1.04</span>
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 5.72</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=JQN3zYhOF1DEYdMmFWCQLLIq0PFBIzC59jbsHvNr2Ns%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="93" data-price="5.72" data-title="robot squad simulator 2017" style="animation-delay: 0.51s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/405760/capsule_231x87.jpg?t=1786634821" alt="Robot Squad Simulator 2017" loading="lazy">
                 <span class="badge">-93%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Robot Squad Simulator 2017</h3>
                 <p class="price">
-                    <span class="old">US$ 14.99</span>
-                    <span class="new">US$ 1.04</span>
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 5.72</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=yqaYGEGYF%2BjfjgBRTZsRw7jUQbxC7Zv%2BgKOoY5aOrvI%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="93" data-price="5.72" data-title="clinically dead" style="animation-delay: 0.54s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/927840/capsule_231x87.jpg?t=1724956453" alt="Clinically Dead" loading="lazy">
                 <span class="badge">-93%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Clinically Dead</h3>
                 <p class="price">
-                    <span class="old">US$ 14.99</span>
-                    <span class="new">US$ 1.04</span>
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 5.72</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=ZKV6UoImHVcIoZJEl3fQJ3PE8PvZtditnl18OCHO7Yg%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="93" data-price="5.72" data-title="ship graveyard simulator" style="animation-delay: 0.57s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1286880/capsule_231x87.jpg?t=1786630246" alt="Ship Graveyard Simulator" loading="lazy">
                 <span class="badge">-93%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Ship Graveyard Simulator</h3>
                 <p class="price">
-                    <span class="old">US$ 14.99</span>
-                    <span class="new">US$ 1.04</span>
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 5.72</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=EqELSl488gTFXZw52jNbtWvUlmBJD%2FWhgj0hvOoY8EM%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="93" data-price="5.72" data-title="police shootout" style="animation-delay: 0.60s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1279240/capsule_231x87.jpg?t=1783534718" alt="Police Shootout" loading="lazy">
                 <span class="badge">-93%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Police Shootout</h3>
                 <p class="price">
-                    <span class="old">US$ 14.99</span>
-                    <span class="new">US$ 1.04</span>
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 5.72</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=LSNS0saAVmccgSRgQu0MF908PuVKcPwI1GPxXoYCTME%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="93" data-price="6.11" data-title="bakery simulator" style="animation-delay: 0.63s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1031120/capsule_231x87.jpg?t=1784221539" alt="Bakery Simulator" loading="lazy">
                 <span class="badge">-93%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Bakery Simulator</h3>
                 <p class="price">
-                    <span class="old">US$ 15.99</span>
-                    <span class="new">US$ 1.11</span>
+                    <span class="old">R$ 87.95</span>
+                    <span class="new">R$ 6.11</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=CgQ3bEtWuNSfva1MNESmK0voFRJXFy4TRQv1KMlKZA8%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="92" data-price="5.22" data-title="plane mechanic simulator" style="animation-delay: 0.66s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/803980/capsule_231x87.jpg?t=1779977349" alt="Plane Mechanic Simulator" loading="lazy">
                 <span class="badge">-92%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Plane Mechanic Simulator</h3>
                 <p class="price">
-                    <span class="old">US$ 11.99</span>
-                    <span class="new">US$ 0.95</span>
+                    <span class="old">R$ 65.95</span>
+                    <span class="new">R$ 5.22</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=QiTV%2FDY01dOSBBaSlI60jkiQ3Rs254MBCvQ0HUOuBic%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="Steam" data-discount="92" data-price="5.22" data-title="handyman corporation" style="animation-delay: 0.69s">
             <div class="thumb-wrap">
                 <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1703180/capsule_231x87.jpg?t=1786636763" alt="Handyman Corporation" loading="lazy">
                 <span class="badge">-92%</span>
+                <span class="store-tag">Steam</span>
             </div>
             <div class="info">
                 <h3>Handyman Corporation</h3>
                 <p class="price">
-                    <span class="old">US$ 11.99</span>
-                    <span class="new">US$ 0.95</span>
+                    <span class="old">R$ 65.95</span>
+                    <span class="new">R$ 5.22</span>
                 </p>
                 <a class="btn" href="https://www.cheapshark.com/redirect?dealID=SnJcmDzXnc0rhotiWWcWv7g0a05zHQbirWxwsXniPh0%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="GOG" data-discount="95" data-price="2.69" data-title="cris tales original soundtrack" style="animation-delay: 0.72s">
             <div class="thumb-wrap">
-                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/952240/capsule_231x87.jpg?t=1782669050" alt="Dieselpunk Wars" loading="lazy">
+                <img src="https://images.greenmangaming.com/a4089dc596014a8bb692b1565158791b/8a59bc3531d5450db40cabfa2020aeee.jpg" alt="Cris Tales Original Soundtrack" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Cris Tales Original Soundtrack</h3>
+                <p class="price">
+                    <span class="old">R$ 54.95</span>
+                    <span class="new">R$ 2.69</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=HUW8W4SaZ1sVV%2FjQ7iJsn2q7X87LZwoVYR8sAVJPz04%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="95" data-price="2.69" data-title="the black within" style="animation-delay: 0.75s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2372870/capsule_231x87.jpg?t=1770196960" alt="The Black Within" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>The Black Within</h3>
+                <p class="price">
+                    <span class="old">R$ 54.95</span>
+                    <span class="new">R$ 2.69</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=%2BRXts37PeHxK9HoyWQ8TtsiJyCCyMOarClCQJl%2FM6LE%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="95" data-price="2.69" data-title="the green light" style="animation-delay: 0.78s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1962950/af76a3615c892059a8d74fddc2e761c4855baf22/capsule_231x87.jpg?t=1770198609" alt="The Green Light" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>The Green Light</h3>
+                <p class="price">
+                    <span class="old">R$ 54.95</span>
+                    <span class="new">R$ 2.69</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=rbmtnVnnKGdKZzuZXIul%2B5kn%2B8YqZ2lejiWitMKgKIo%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="95" data-price="8.20" data-title="leisure suit larry - wet dreams don't dry" style="animation-delay: 0.81s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/765870/capsule_231x87.jpg?t=1728901767" alt="Leisure Suit Larry - Wet Dreams Don't Dry" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Leisure Suit Larry - Wet Dreams Don't Dry</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 8.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=wWfF4rdLiXzH94W7brd1ZfOb1T1pY4f6OLGpfiGli94%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="95" data-price="8.20" data-title="warhammer: chaosbane" style="animation-delay: 0.84s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/774241/capsule_231x87.jpg?t=1778175102" alt="Warhammer: Chaosbane" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Warhammer: Chaosbane</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 8.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=6vkWls3xMulPOUxNrRfwEBDAHuNvu5fHsytYuyGa%2BUM%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="95" data-price="8.20" data-title="war hospital" style="animation-delay: 0.87s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1553000/capsule_231x87.jpg?t=1764149578" alt="War Hospital" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>War Hospital</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 8.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=k7CKfg57gyMdL0Xjsh%2BINYX11wC28mkTIRhGVEt4qxE%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="95" data-price="10.95" data-title="warhammer: chaosbane - slayer edition" style="animation-delay: 0.90s">
+            <div class="thumb-wrap">
+                <img src="https://sttc.gamersgate.com/images/product/warhammer-chaosbane-slayer-edition/cover-180-375571.jpg" alt="Warhammer: Chaosbane - Slayer Edition" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Warhammer: Chaosbane - Slayer Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 219.95</span>
+                    <span class="new">R$ 10.95</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=ZRpXwBqOlnrJq2VLK2bkl0mSqWmqhrE5o1BanQrpBYo%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="95" data-price="9.62" data-title="leisure suit larry - wet dreams dry twice" style="animation-delay: 0.93s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1373430/capsule_231x87.jpg?t=1728901827" alt="Leisure Suit Larry - Wet Dreams Dry Twice" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Leisure Suit Larry - Wet Dreams Dry Twice</h3>
+                <p class="price">
+                    <span class="old">R$ 192.45</span>
+                    <span class="new">R$ 9.62</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=XxWPYfzfaIFZUVoGBANl%2FpaiVXn%2F4dN5pHRr8iEM%2FhI%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="95" data-price="1.38" data-title="dance of cards soundtrack" style="animation-delay: 0.96s">
+            <div class="thumb-wrap">
+                <img src="https://images.gog-statics.com/71513a22d13f41a4b2f4902088807585c7f56737725526877db9a688cd02dc94_product_tile_117h.webp" alt="Dance of Cards Soundtrack" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Dance of Cards Soundtrack</h3>
+                <p class="price">
+                    <span class="old">R$ 27.45</span>
+                    <span class="new">R$ 1.38</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=gtMIEsFpSGtj5qQlXzznqTjkXYE%2F%2BKPDvdDhlQejCys%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="95" data-price="8.20" data-title="dead age 1 and 2 bundle" style="animation-delay: 0.99s">
+            <div class="thumb-wrap">
+                <img src="https://images.gog-statics.com/5a4a5c397cdce1d6336ff3676f7f0272200c2b7beb2682a4650538994ccba82d_product_tile_117h.webp" alt="Dead Age 1 and 2 Bundle" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Dead Age 1 and 2 Bundle</h3>
+                <p class="price">
+                    <span class="old">R$ 162.75</span>
+                    <span class="new">R$ 8.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=AMpvTSNX%2FcG2sr%2BiNRG4uRlkjJdlFm33EDz7JjbQyOw%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="94" data-price="4.90" data-title="the way" style="animation-delay: 1.02s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/311010/capsule_231x87.jpg?t=1724959391" alt="The Way" loading="lazy">
+                <span class="badge">-94%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>The Way</h3>
+                <p class="price">
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 4.90</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=uVRUyTsA2g%2B0onQcxiXxd2HaSgBA5syjpiZEdNqAvyk%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="94" data-price="4.90" data-title="dex" style="animation-delay: 1.05s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/269650/capsule_231x87.jpg?t=1637152112" alt="Dex" loading="lazy">
+                <span class="badge">-94%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Dex</h3>
+                <p class="price">
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 4.90</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=hACx0TAsxux0ksOa4CrjhYS%2Bv4%2Bhvo8F10kWxLZtzyM%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="94" data-price="6.54" data-title="aircraft carrier survival" style="animation-delay: 1.08s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1021100/capsule_231x87.jpg?t=1786628153" alt="Aircraft Carrier Survival" loading="lazy">
+                <span class="badge">-94%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Aircraft Carrier Survival</h3>
+                <p class="price">
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 6.54</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=hhz9F3dKN4HCs7Nbep%2BYv%2FNYfyQIdgMtD7b3%2B4awInI%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="92" data-price="4.35" data-title="alice vr" style="animation-delay: 1.11s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/513320/capsule_231x87.jpg?t=1732097081" alt="ALICE VR" loading="lazy">
                 <span class="badge">-92%</span>
+                <span class="store-tag">GOG</span>
             </div>
             <div class="info">
-                <h3>Dieselpunk Wars</h3>
+                <h3>ALICE VR</h3>
                 <p class="price">
-                    <span class="old">US$ 14.99</span>
-                    <span class="new">US$ 1.19</span>
+                    <span class="old">R$ 54.95</span>
+                    <span class="new">R$ 4.35</span>
                 </p>
-                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=0pV3OjoyEULN9hlkWsk%2BQk1DxCMyL5IwxZyR%2BoU5uMM%3D" target="_blank">Ver oferta</a>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=ukFjM1bZIF1IRF%2FYxojJCkut3RsFcoFUCiG7H7k9jmQ%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="GOG" data-discount="92" data-price="7.43" data-title="orbital bullet  the 360 rogue-lite" style="animation-delay: 1.14s">
             <div class="thumb-wrap">
-                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1263620/capsule_231x87.jpg?t=1782669422" alt="Yacht Mechanic Simulator" loading="lazy">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1167680/capsule_231x87.jpg?t=1772111526" alt="Orbital Bullet  The 360 Rogue-lite" loading="lazy">
                 <span class="badge">-92%</span>
+                <span class="store-tag">GOG</span>
             </div>
             <div class="info">
-                <h3>Yacht Mechanic Simulator</h3>
+                <h3>Orbital Bullet  The 360 Rogue-lite</h3>
                 <p class="price">
-                    <span class="old">US$ 14.99</span>
-                    <span class="new">US$ 1.19</span>
+                    <span class="old">R$ 93.44</span>
+                    <span class="new">R$ 7.43</span>
                 </p>
-                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=P6LC4L5GFA3W6u%2FnMiXdFACLTaGkgCM2xFkxiwWvW8M%3D" target="_blank">Ver oferta</a>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=lKvJoKum29EUuHjOGtjgHTpZJJA%2FH7912QPmIw0rXRM%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="GOG" data-discount="92" data-price="10.95" data-title="the coma: recut deluxe edition" style="animation-delay: 1.17s">
             <div class="thumb-wrap">
-                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/598450/capsule_231x87.jpg?t=1724959213" alt="Slice, Dice and Rice" loading="lazy">
-                <span class="badge">-91%</span>
+                <img src="https://images.gog-statics.com/980ab8a71d277b68d187f73227fa27b36446d4ac2d9e14b2eda8e072e18e9f81_product_tile_117h.webp" alt="The Coma: Recut Deluxe Edition" loading="lazy">
+                <span class="badge">-92%</span>
+                <span class="store-tag">GOG</span>
             </div>
             <div class="info">
-                <h3>Slice, Dice and Rice</h3>
+                <h3>The Coma: Recut Deluxe Edition</h3>
                 <p class="price">
-                    <span class="old">US$ 9.99</span>
-                    <span class="new">US$ 0.89</span>
+                    <span class="old">R$ 137.44</span>
+                    <span class="new">R$ 10.95</span>
                 </p>
-                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=ukTK%2B2ubwZICbmUvV8X5O1BZRygaXcL7UdI47zuVLT4%3D" target="_blank">Ver oferta</a>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=EvQltE2BeBSctF6Hvv2rO7tBuSD%2FgwfMwEtPb%2FID3kM%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="GOG" data-discount="92" data-price="10.95" data-title="the tarnishing of juxtia" style="animation-delay: 1.20s">
             <div class="thumb-wrap">
-                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/670930/capsule_231x87.jpg?t=1724957704" alt="Escape Doodland" loading="lazy">
-                <span class="badge">-91%</span>
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1428710/capsule_231x87.jpg?t=1729181401" alt="The Tarnishing of Juxtia" loading="lazy">
+                <span class="badge">-92%</span>
+                <span class="store-tag">GOG</span>
             </div>
             <div class="info">
-                <h3>Escape Doodland</h3>
+                <h3>The Tarnishing of Juxtia</h3>
                 <p class="price">
-                    <span class="old">US$ 9.99</span>
-                    <span class="new">US$ 0.89</span>
+                    <span class="old">R$ 137.44</span>
+                    <span class="new">R$ 10.95</span>
                 </p>
-                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=01Lv%2FMx0A9id7DRASTXnvCitsIw9xCSprLFamki2dYw%3D" target="_blank">Ver oferta</a>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=5iBJULIhMl%2FFARuXHKeSI%2FLOKxLvON7Optbt5ROM9V0%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="GOG" data-discount="92" data-price="10.95" data-title="tower of time" style="animation-delay: 1.23s">
             <div class="thumb-wrap">
-                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/979810/capsule_231x87.jpg?t=1786634824" alt="Grave Keeper" loading="lazy">
-                <span class="badge">-91%</span>
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/617480/75e6dee24eecc1fb9f7d4f0b0f2b7a3a6ff207a0/capsule_231x87.jpg?t=1786633807" alt="Tower of Time" loading="lazy">
+                <span class="badge">-92%</span>
+                <span class="store-tag">GOG</span>
             </div>
             <div class="info">
-                <h3>Grave Keeper</h3>
+                <h3>Tower of Time</h3>
                 <p class="price">
-                    <span class="old">US$ 9.99</span>
-                    <span class="new">US$ 0.89</span>
+                    <span class="old">R$ 137.44</span>
+                    <span class="new">R$ 10.95</span>
                 </p>
-                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=9o5IXXjLz%2BeHHY%2BFgO3aAy%2Bb6yeVY%2B0WjtiPx1cKI0M%3D" target="_blank">Ver oferta</a>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=%2BTtUcXUugzMF2EAX8PXOWDv7Ax7h8F6cHsx9uUYAcBU%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
-        <div class="card">
+        <div class="card" data-store="GOG" data-discount="92" data-price="4.90" data-title="attentat 1942" style="animation-delay: 1.26s">
             <div class="thumb-wrap">
-                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/961040/capsule_231x87.jpg?t=1786634823" alt="Down to Hell" loading="lazy">
-                <span class="badge">-91%</span>
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/676630/capsule_231x87.jpg?t=1755001470" alt="Attentat 1942" loading="lazy">
+                <span class="badge">-92%</span>
+                <span class="store-tag">GOG</span>
             </div>
             <div class="info">
-                <h3>Down to Hell</h3>
+                <h3>Attentat 1942</h3>
                 <p class="price">
-                    <span class="old">US$ 9.99</span>
-                    <span class="new">US$ 0.89</span>
+                    <span class="old">R$ 60.45</span>
+                    <span class="new">R$ 4.90</span>
                 </p>
-                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=l9KSjigq5qOTuhX6PdFhREFX5x3j3GZtp1vfj4Vs5z4%3D" target="_blank">Ver oferta</a>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=OqzLc7%2Fu%2BIz3u7grxah4h4LZx4g8ShHOtjHbVsnGTOo%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="91" data-price="4.35" data-title="distraint 2" style="animation-delay: 1.29s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/743390/capsule_231x87.jpg?t=1732098854" alt="DISTRAINT 2" loading="lazy">
+                <span class="badge">-91%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>DISTRAINT 2</h3>
+                <p class="price">
+                    <span class="old">R$ 49.45</span>
+                    <span class="new">R$ 4.35</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=u2W7J08koS%2FF4QpSaCvpcKaOraqd1OwZUZQJpHvPfk4%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="91" data-price="8.75" data-title="tower hunter:erza's trial" style="animation-delay: 1.32s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/844850/capsule_231x87.jpg?t=1667443834" alt="Tower Hunter:Erza's Trial" loading="lazy">
+                <span class="badge">-91%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Tower Hunter:Erza's Trial</h3>
+                <p class="price">
+                    <span class="old">R$ 98.94</span>
+                    <span class="new">R$ 8.75</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=70LWuux8j5j2ZurwaEAY2vrGtsTUimwLPd%2BSm613b8o%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="91" data-price="4.90" data-title="atlantis 3: the new world" style="animation-delay: 1.35s">
+            <div class="thumb-wrap">
+                <img src="https://images.gog-statics.com/0077048ad2213a74fe61f19e94621be5e409365951483c1fe60e71110002c596_product_tile_117h.webp" alt="Atlantis 3: The New World" loading="lazy">
+                <span class="badge">-91%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Atlantis 3: The New World</h3>
+                <p class="price">
+                    <span class="old">R$ 54.95</span>
+                    <span class="new">R$ 4.90</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=DRPqo%2FSB27CYnVEU3JKO52o2QX2klsRPkWW8iQM7WH8%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="91" data-price="4.90" data-title="dracula trilogy" style="animation-delay: 1.38s">
+            <div class="thumb-wrap">
+                <img src="https://images.gog-statics.com/df4f17bb50282e72260819442fce392a7d07cc7cf5907ca3953de30df96f292e_product_tile_117h.webp" alt="Dracula Trilogy" loading="lazy">
+                <span class="badge">-91%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Dracula Trilogy</h3>
+                <p class="price">
+                    <span class="old">R$ 54.95</span>
+                    <span class="new">R$ 4.90</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=DksWe9eklXG3tP64S4vlhjTyFgNPhUaSTk5moENyp%2Bw%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="GOG" data-discount="91" data-price="4.90" data-title="caveblazers" style="animation-delay: 1.41s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/452060/capsule_231x87.jpg?t=1724766962" alt="Caveblazers" loading="lazy">
+                <span class="badge">-91%</span>
+                <span class="store-tag">GOG</span>
+            </div>
+            <div class="info">
+                <h3>Caveblazers</h3>
+                <p class="price">
+                    <span class="old">R$ 54.95</span>
+                    <span class="new">R$ 4.90</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=wOOFGdBdX6oHEo1Ivb0kJoTQDmrMLU36Jy%2Fe29Lb7NY%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="96" data-price="3.24" data-title="the book of legends" style="animation-delay: 1.44s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/277470/capsule_231x87.jpg?t=1730488403" alt="The Book of Legends" loading="lazy">
+                <span class="badge">-96%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>The Book of Legends</h3>
+                <p class="price">
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 3.24</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=nlp3qDJuphBKbhB375Uh1maMvh4fQqKur9BHFfgLZqI%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="96" data-price="3.24" data-title="3 stars of destiny" style="animation-delay: 1.47s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/278530/capsule_231x87.jpg?t=1723878860" alt="3 Stars of Destiny" loading="lazy">
+                <span class="badge">-96%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>3 Stars of Destiny</h3>
+                <p class="price">
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 3.24</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=6Aub49GWdswiskFpaRZO5RAmunYBStZzD0B4wnwhbW8%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="96" data-price="3.24" data-title="asguaard" style="animation-delay: 1.50s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/332380/3644b8c12f7936c45d032e0286c94d38a3d36fc1/capsule_231x87.jpg?t=1730487357" alt="Asguaard" loading="lazy">
+                <span class="badge">-96%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Asguaard</h3>
+                <p class="price">
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 3.24</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=K1MyHIH8RzjWZr%2FdjEB7fmgXCmF4mFwnlW2wZgCa5mc%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="96" data-price="3.90" data-title="cyber avenger" style="animation-delay: 1.53s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2606270/999f5dd68c940b281def83a4b261698afd44c442/capsule_231x87.jpg?t=1757268783" alt="Cyber Avenger" loading="lazy">
+                <span class="badge">-96%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Cyber Avenger</h3>
+                <p class="price">
+                    <span class="old">R$ 98.94</span>
+                    <span class="new">R$ 3.90</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=l%2FF5BpsRT4wNh0cdyDv0PSWFzTvOmohwiE4KBIXimww%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="96" data-price="4.35" data-title="dwarven skykeep" style="animation-delay: 1.56s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1076120/capsule_231x87.jpg?t=1733923775" alt="Dwarven Skykeep" loading="lazy">
+                <span class="badge">-96%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Dwarven Skykeep</h3>
+                <p class="price">
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 4.35</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=vvHXhx1saw2O4jxS2BtRPOeQ7g6m9j98oPYxZQdDIsI%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="96" data-price="2.81" data-title="the black within" style="animation-delay: 1.59s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2372870/capsule_231x87.jpg?t=1770196960" alt="The Black Within" loading="lazy">
+                <span class="badge">-96%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>The Black Within</h3>
+                <p class="price">
+                    <span class="old">R$ 70.12</span>
+                    <span class="new">R$ 2.81</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=mvIusXluS%2FFOwQgIGAEQTWNytAnNG01xIAa61Nu4sQ8%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="96" data-price="2.81" data-title="the green light" style="animation-delay: 1.62s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1962950/af76a3615c892059a8d74fddc2e761c4855baf22/capsule_231x87.jpg?t=1770198609" alt="The Green Light" loading="lazy">
+                <span class="badge">-96%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>The Green Light</h3>
+                <p class="price">
+                    <span class="old">R$ 70.12</span>
+                    <span class="new">R$ 2.81</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=X3BLxjTtXbfVTduCnYPvAZ1g1UE9Yz8QkWvMYKK6f%2FQ%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="3.58" data-title="dofamine" style="animation-delay: 1.65s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1441180/capsule_231x87.jpg?t=1746255758" alt="Dofamine" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Dofamine</h3>
+                <p class="price">
+                    <span class="old">R$ 72.55</span>
+                    <span class="new">R$ 3.58</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=opwzftQ44yUZ3nqZsvbn%2BHWzMB4f9y%2BecA2Vbph4sYo%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="8.20" data-title="agents of mayhem" style="animation-delay: 1.68s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/304530/capsule_231x87.jpg?t=1620292667" alt="Agents of Mayhem" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Agents of Mayhem</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 8.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=hke7OsMpnWZJMIf4UHu5V8hYurHIyVBac5AviQLuVMw%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="8.20" data-title="leisure suit larry - wet dreams don't dry" style="animation-delay: 1.71s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/765870/capsule_231x87.jpg?t=1728901767" alt="Leisure Suit Larry - Wet Dreams Don't Dry" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Leisure Suit Larry - Wet Dreams Don't Dry</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 8.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=Bw%2BfObMrrHC4EkJ3AKvPSse1bMyvDLUObke0Rz%2FV3uE%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="8.20" data-title="warhammer: chaosbane" style="animation-delay: 1.74s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/774241/capsule_231x87.jpg?t=1778175102" alt="Warhammer: Chaosbane" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Warhammer: Chaosbane</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 8.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=mBO%2FO%2B0slcQYR7lQYqLrSIZ9HisytSmDDuXEk3E9WNo%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="9.57" data-title="leisure suit larry - wet dreams dry twice" style="animation-delay: 1.77s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1373430/capsule_231x87.jpg?t=1728901827" alt="Leisure Suit Larry - Wet Dreams Dry Twice" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Leisure Suit Larry - Wet Dreams Dry Twice</h3>
+                <p class="price">
+                    <span class="old">R$ 192.45</span>
+                    <span class="new">R$ 9.57</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=6ytfPc0%2BAwxkorXaptmkt2ptJet6BhM7zImUld1X4bI%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="10.95" data-title="heads up! phones down edition!" style="animation-delay: 1.80s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2533370/capsule_231x87.jpg?t=1699552797" alt="Heads Up! Phones Down Edition!" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Heads Up! Phones Down Edition!</h3>
+                <p class="price">
+                    <span class="old">R$ 219.95</span>
+                    <span class="new">R$ 10.95</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=VOsq7JphC7g2vdrSzl3Qlm6OaQCvdwJRdxD0l%2Bwln5E%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="13.70" data-title="warhammer: chaosbane - slayer edition" style="animation-delay: 1.83s">
+            <div class="thumb-wrap">
+                <img src="https://sttc.gamersgate.com/images/product/warhammer-chaosbane-slayer-edition/cover-180-375571.jpg" alt="Warhammer: Chaosbane - Slayer Edition" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Warhammer: Chaosbane - Slayer Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 274.94</span>
+                    <span class="new">R$ 13.70</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=SjP3zHInzaYWJiK7rfdddPbDsq5jbJGOAp9MJcZ1K5Q%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="13.70" data-title="rims racing" style="animation-delay: 1.86s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1346010/capsule_231x87.jpg?t=1759396011" alt="RiMS Racing" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>RiMS Racing</h3>
+                <p class="price">
+                    <span class="old">R$ 274.94</span>
+                    <span class="new">R$ 13.70</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=tOHvw8Fe58F3xIpcaE0%2BAaHe6BwX%2FzZG2DDt%2B6BACss%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="13.70" data-title="tom clancy's ghost recon wildlands" style="animation-delay: 1.89s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/460930/36e1239af9ac7388129cb162940cf61d116f46fb/capsule_231x87_alt_assets_0.jpg?t=1786116240" alt="Tom Clancy's Ghost Recon Wildlands" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Tom Clancy's Ghost Recon Wildlands</h3>
+                <p class="price">
+                    <span class="old">R$ 274.94</span>
+                    <span class="new">R$ 13.70</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=4kDTKHjNxYHXKoRIXG5hffdgwWeOgyiiQDFKEy%2B06vY%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="16.45" data-title="tom clancys ghost recon breakpoint" style="animation-delay: 1.92s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2231380/c3198d3208113c6ea52ff68f2ccda869a3716f94/capsule_231x87.jpg?t=1786026109" alt="Tom Clancys Ghost Recon Breakpoint" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Tom Clancys Ghost Recon Breakpoint</h3>
+                <p class="price">
+                    <span class="old">R$ 329.94</span>
+                    <span class="new">R$ 16.45</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=erg4Se7sA7sX85Uy%2FCYOyFV7Uk21%2F0TIOrppIQRK10A%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="19.20" data-title="tom clancys ghost recon breakpoint - deluxe edition" style="animation-delay: 1.95s">
+            <div class="thumb-wrap">
+                <img src="https://images.greenmangaming.com/a5f54fd79e4b47f8850a3fd614dab146/428406fc41254faca0f40859c7a229b8.jpg" alt="Tom Clancys Ghost Recon Breakpoint - Deluxe Edition" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Tom Clancys Ghost Recon Breakpoint - Deluxe Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 384.94</span>
+                    <span class="new">R$ 19.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=JiATXXXb3xwIEvcvWGpXHQBZrlkTLnmxN53x30BPvzc%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="19.20" data-title="suicide squad: kill the justice league" style="animation-delay: 1.98s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/315210/capsule_231x87.jpg?t=1777940046" alt="Suicide Squad: Kill the Justice League" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Suicide Squad: Kill the Justice League</h3>
+                <p class="price">
+                    <span class="old">R$ 384.94</span>
+                    <span class="new">R$ 19.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=FV9S8e49l1EMBL1u%2FjWX3XqyKNcKwboHYz3CDkCWo3s%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="27.45" data-title="the daedalic armageddon bundle" style="animation-delay: 2.01s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/subs/55062/capsule_231x87.jpg?t=1447457405" alt="The Daedalic Armageddon Bundle" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>The Daedalic Armageddon Bundle</h3>
+                <p class="price">
+                    <span class="old">R$ 549.94</span>
+                    <span class="new">R$ 27.45</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=anYX3VYy6OfF2X0F7LDRmuaBaw5yxpFdelP0cQXmsos%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="95" data-price="27.45" data-title="suicide squad: kill the justice league - deluxe edition" style="animation-delay: 2.04s">
+            <div class="thumb-wrap">
+                <img src="https://images.greenmangaming.com/98fb0e76d36341cea0f0ca36ce9c08c6/f08e60d2766549d6b1e89e25444a00e8.jpg" alt="Suicide Squad: Kill the Justice League - Deluxe Edition" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Suicide Squad: Kill the Justice League - Deluxe Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 549.94</span>
+                    <span class="new">R$ 27.45</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=oEE9bBm34JwWr9B3vJsDZKq9o9wpaDxh%2B6fZLK%2B920o%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="94" data-price="2.92" data-title="shadows and lies" style="animation-delay: 2.07s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/594000/ecfce40dc29d6dde468f7c1a93479288df58ad60/capsule_231x87.jpg?t=1730757537" alt="Shadows and Lies" loading="lazy">
+                <span class="badge">-94%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Shadows and Lies</h3>
+                <p class="price">
+                    <span class="old">R$ 49.45</span>
+                    <span class="new">R$ 2.92</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=58FrrS%2F5zP5paCB0jfiGoJufsDMX5gmKQLI7CpVhZ8I%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="94" data-price="3.24" data-title="dreamscape" style="animation-delay: 2.10s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271990/capsule_231x87.jpg?t=1745514663" alt="Dreamscape" loading="lazy">
+                <span class="badge">-94%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Dreamscape</h3>
+                <p class="price">
+                    <span class="old">R$ 54.95</span>
+                    <span class="new">R$ 3.24</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=DRsqBIztyrSSD1dlKE7nvWMqgeRHuelphNm3huOj5H8%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Humble Store" data-discount="94" data-price="3.24" data-title="millennium 5 - the battle of the millennium" style="animation-delay: 2.13s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/298850/2bb4f42078be0e55e1beed6810e4e5bb583327d5/capsule_231x87.jpg?t=1730548493" alt="Millennium 5 - The Battle of the Millennium" loading="lazy">
+                <span class="badge">-94%</span>
+                <span class="store-tag">Humble Store</span>
+            </div>
+            <div class="info">
+                <h3>Millennium 5 - The Battle of the Millennium</h3>
+                <p class="price">
+                    <span class="old">R$ 54.95</span>
+                    <span class="new">R$ 3.24</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=kBHsLuUxuIdQxgGE%2FRp5yPER46R%2FYCHPv5A24reemCw%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="100" data-price="0.00" data-title="caravan sandwitch" style="animation-delay: 2.16s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1582650/9f7f02e3648ee21491711c2da09aca89d1d41f9e/capsule_231x87.jpg?t=1757404894" alt="Caravan SandWitch" loading="lazy">
+                <span class="badge">-100%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Caravan SandWitch</h3>
+                <p class="price">
+                    <span class="old">R$ 137.44</span>
+                    <span class="new">R$ 0.00</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=4zmIPqE6tC4apJr%2F6ORiyjFrkq8BMCFv2zpbK4m7MVY%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="100" data-price="0.00" data-title="targeted -10 days" style="animation-delay: 2.19s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3075050/capsule_231x87.jpg?t=1782310187" alt="Targeted -10 Days" loading="lazy">
+                <span class="badge">-100%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Targeted -10 Days</h3>
+                <p class="price">
+                    <span class="old">R$ 1099.95</span>
+                    <span class="new">R$ 0.00</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=TmKw%2Fc3rVZ8eNhFNRDYWR2sLM6P1WaxXpaX3nZoAxUY%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="95" data-price="2.15" data-title="dizzy fight" style="animation-delay: 2.22s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/3c60ba1d367041b8af21b5e2f8e3a57d/dizzy-fight-hangp.png" alt="Dizzy Fight" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Dizzy Fight</h3>
+                <p class="price">
+                    <span class="old">R$ 43.95</span>
+                    <span class="new">R$ 2.15</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=0xqRn4wKZLSRsQ5UWL0VFoyeKkk0EnIMMn4OX72TDCk%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="95" data-price="2.15" data-title="hyper warehouse simulator" style="animation-delay: 2.25s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/b3b98644340141cf8fcd4118c67fad28/hyper-warehouse-simulator-1957x.png" alt="Hyper Warehouse Simulator" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Hyper Warehouse Simulator</h3>
+                <p class="price">
+                    <span class="old">R$ 43.95</span>
+                    <span class="new">R$ 2.15</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=TCmMcMA5mm%2FEquo2aBrfZgnHHuwWRK5nDfhBZSZUI%2FI%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="95" data-price="2.69" data-title="prop hunt" style="animation-delay: 2.28s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1600950/12cbed88eb3a646266afb87c29f5388f84040cc5/capsule_231x87.jpg?t=1770554432" alt="Prop Hunt" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Prop Hunt</h3>
+                <p class="price">
+                    <span class="old">R$ 54.95</span>
+                    <span class="new">R$ 2.69</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=%2B3C4gpPXSsEYOlQ%2BPISwRBRdeja0PU4lCG7MTqEFZrI%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="95" data-price="19.20" data-title="need for speed heat deluxe edition" style="animation-delay: 2.31s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/f4241a8649244c5693450ebda42f935b/need-for-speed-heat-1lhdh.jpg" alt="Need for Speed Heat Deluxe Edition" loading="lazy">
+                <span class="badge">-95%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Need for Speed Heat Deluxe Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 384.94</span>
+                    <span class="new">R$ 19.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=GQYhHzOtQcCuICwD5sXBHG91ZHdsyxYRQbVgR%2Bs4Kbc%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="93" data-price="5.33" data-title="sherlock purr 2 - extended edition" style="animation-delay: 2.34s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/9be738ad51e949caab95be5e0e3b1436/sherlock-purr-2-ycv45.png" alt="Sherlock Purr 2 - Extended Edition" loading="lazy">
+                <span class="badge">-93%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Sherlock Purr 2 - Extended Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 76.95</span>
+                    <span class="new">R$ 5.33</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=3F43ZguUZNUBHKYbu7ywRH93NSeKripvstg3nXridyI%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="1.59" data-title="crown of ruin: the parkour game part ii" style="animation-delay: 2.37s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/31f39439c65b44f6860cc38be69baf45/crown-of-ruin-the-parkour-game-part-ii-diiix.png" alt="Crown of Ruin: The Parkour Game Part II" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Crown of Ruin: The Parkour Game Part II</h3>
+                <p class="price">
+                    <span class="old">R$ 16.45</span>
+                    <span class="new">R$ 1.59</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=%2F8olY0U2E2BgN%2FZytLTuX8jUgGgTNvBdUdbPrc2IqdU%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="2.69" data-title="chrono stranded" style="animation-delay: 2.40s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/329ee81bb6414017afe2a746fea52163/chrono-stranded-yl2or.jpg" alt="Chrono Stranded" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Chrono Stranded</h3>
+                <p class="price">
+                    <span class="old">R$ 27.45</span>
+                    <span class="new">R$ 2.69</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=Z2bHjjGh0N1UNu%2FxQS%2BbduocBoCOY%2BAvH8NMUKJBJ4U%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="2.69" data-title="sos ops!" style="animation-delay: 2.43s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2475460/6c9a06507252901938f4f624c0575a05572ecd64/capsule_231x87.jpg?t=1786452741" alt="SOS OPS!" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>SOS OPS!</h3>
+                <p class="price">
+                    <span class="old">R$ 27.45</span>
+                    <span class="new">R$ 2.69</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=%2FOfcRLsdwWcSUijjJCfqe2Ea005rpGqZNfD%2FWQxADIo%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="8.20" data-title="art is rifle" style="animation-delay: 2.46s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2486730/5816aae939cbcdf714b0a594bbff251af76595fd/capsule_231x87.jpg?t=1784565348" alt="ART IS RIFLE" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>ART IS RIFLE</h3>
+                <p class="price">
+                    <span class="old">R$ 82.45</span>
+                    <span class="new">R$ 8.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=c83%2BRCw6usrCX3R9OdEAs1kEU8LK8duom6hDuRTq5g0%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="10.95" data-title="need for speed rivals complete edition" style="animation-delay: 2.49s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/9bcbbeceddf74b1da82a7e1c91b6c167/need-for-speed-rivals-1mtyz.jpg" alt="Need for Speed Rivals Complete Edition" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Need for Speed Rivals Complete Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 10.95</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=Id2a39t1Vvm2mmRxal%2BPGDvDbM3F%2Foj3C9PAYdxv%2Bi8%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="10.95" data-title="need for speed most wanted" style="animation-delay: 2.52s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1262560/capsule_231x87.jpg?t=1777484382" alt="Need for Speed Most Wanted" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Need for Speed Most Wanted</h3>
+                <p class="price">
+                    <span class="old">R$ 109.94</span>
+                    <span class="new">R$ 10.95</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=XJufk%2FmqLg9pmDNs9h0T%2F5jdiuB%2B3CGyG8tUu18Ri%2FE%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="16.45" data-title="mordhau" style="animation-delay: 2.55s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/629760/a3c23c764d4e2184322980bc8e40f69dafb99e2a/capsule_231x87.jpg?t=1777933284" alt="MORDHAU" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>MORDHAU</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 16.45</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=JhUomOLFVv7VsfOHH6lbb6EOrD0cYywJBXT3xp8Mrnw%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="16.45" data-title="hotel lake edition" style="animation-delay: 2.58s">
+            <div class="thumb-wrap">
+                <img src="https://cdn2.unrealengine.com/egs-hotellakeedition-ringzero-bundles-s2-1200x1600-892e093a3cfc.jpg" alt="Hotel Lake Edition" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Hotel Lake Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 16.45</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=oazMksQAJTewHVrCF3SXk3kyuElFZ51fR0sIabtLOdg%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="16.45" data-title="need for speed deluxe edition" style="animation-delay: 2.61s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/708e7b244f6e474d8448d21074f76968/need-for-speed-2016-otwgl.jpg" alt="Need for Speed Deluxe Edition" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Need for Speed Deluxe Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 16.45</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=LGGXos32Zp5yEoAeggCgGobkeg4GV3xpangmtTMEkU4%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="16.45" data-title="need for speed payback deluxe edition" style="animation-delay: 2.64s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/00d69100f090489d9a8cd2db75ad9d8e/need-for-speed-payback-7dqwz.jpg" alt="Need for Speed Payback Deluxe Edition" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Need for Speed Payback Deluxe Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 16.45</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=8K2q1l%2FGqOWrOmjFujtlBX0qqRSDAfNUOib%2F7Wy99r0%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="16.45" data-title="need for speed hot pursuit remastered" style="animation-delay: 2.67s">
+            <div class="thumb-wrap">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1328660/capsule_231x87.jpg?t=1779987591" alt="Need for Speed Hot Pursuit Remastered" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Need for Speed Hot Pursuit Remastered</h3>
+                <p class="price">
+                    <span class="old">R$ 164.94</span>
+                    <span class="new">R$ 16.45</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=faoXwPWrqN%2BhVsYhg9dedkVfFrplekghH9HqyRAkKGQ%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="19.20" data-title="taxi life - supporter edition" style="animation-delay: 2.70s">
+            <div class="thumb-wrap">
+                <img src="https://cdn2.unrealengine.com/egs-taxilifesupporteredition-simteract-editions-s2-1200x1600-e6f3f66bc106.jpg" alt="Taxi Life - Supporter Edition" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Taxi Life - Supporter Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 192.45</span>
+                    <span class="new">R$ 19.20</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=GgnEJGemM6Nki50VUWQVPC8eXuvq%2FBgpDjLAdAJ7KHk%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="21.95" data-title="clash - zeno edition" style="animation-delay: 2.73s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/e39bb30cfdd6460f8b3b67fe8ced4291/clash--artifacts-of-chaos-1rbwu.jpg" alt="Clash - Zeno Edition" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Clash - Zeno Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 219.95</span>
+                    <span class="new">R$ 21.95</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=0zgna5P3D4Lsj09RSBXyXhjrK6de9jxWFvcnKAXeQ8Y%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="21.95" data-title="ad infinitum supporter edition" style="animation-delay: 2.76s">
+            <div class="thumb-wrap">
+                <img src="https://sttc.gamersgate.com/images/product/ad-infinitum-supporter-edition/cover-180-40a501.jpg" alt="Ad Infinitum Supporter Edition" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Ad Infinitum Supporter Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 219.95</span>
+                    <span class="new">R$ 21.95</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=tOARGrnWtDNFpwMYv1GNOE4hB118FnrAzxfhbdqMu9o%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="21.95" data-title="war hospital - supporter edition" style="animation-delay: 2.79s">
+            <div class="thumb-wrap">
+                <img src="https://sttc.gamersgate.com/images/product/war-hospital-supporter-edition/cover-180-c6d380.jpg" alt="War Hospital - Supporter Edition" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>War Hospital - Supporter Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 219.95</span>
+                    <span class="new">R$ 21.95</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=v0cdjqcXZcHb8n6whmudJ9eLLP%2BGblzPjtxiqV3E1Qc%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="21.95" data-title="battlefield hardline ultimate edition" style="animation-delay: 2.82s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/6dbbae033487487e90e3144e4918018b/battlefield-hardline-n1l1h.jpg" alt="Battlefield Hardline Ultimate Edition" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Battlefield Hardline Ultimate Edition</h3>
+                <p class="price">
+                    <span class="old">R$ 219.95</span>
+                    <span class="new">R$ 21.95</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=MdNKCHJtNQx%2Bt3%2Fn6ApBQl%2BeQs39N7TymZj933ssCP0%3D" target="_blank">Ver oferta</a>
+            </div>
+        </div>
+        
+        <div class="card" data-store="Epic Games" data-discount="90" data-price="21.95" data-title="battlefield 1 revolution" style="animation-delay: 2.85s">
+            <div class="thumb-wrap">
+                <img src="https://cdn1.epicgames.com/spt-assets/18822837ee7344a68c0270c2f450f768/battlefield-1-9wn24.jpg" alt="Battlefield 1 Revolution" loading="lazy">
+                <span class="badge">-90%</span>
+                <span class="store-tag">Epic Games</span>
+            </div>
+            <div class="info">
+                <h3>Battlefield 1 Revolution</h3>
+                <p class="price">
+                    <span class="old">R$ 219.95</span>
+                    <span class="new">R$ 21.95</span>
+                </p>
+                <a class="btn" href="https://www.cheapshark.com/redirect?dealID=tDR9WRCrua8gZv5ajVKHb%2B1KOFc5EUf%2Fqhxb4bXeCoI%3D" target="_blank">Ver oferta</a>
             </div>
         </div>
         
     </div>
+    <p class="empty-msg" id="empty-msg">Nenhum jogo encontrado com esse filtro.</p>
+
     <footer>
         Preços e links via <a href="https://www.cheapshark.com" style="color: var(--muted);">CheapShark</a>
     </footer>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const tabs = document.querySelectorAll('.tab');
+        const sortSelect = document.getElementById('sort');
+        const searchInput = document.getElementById('search');
+        const emptyMsg = document.getElementById('empty-msg');
+        let currentFilter = 'all';
+        let searchTerm = '';
+        let searchDebounce;
+
+        function applyFilterAndSort() {
+            const cards = Array.from(grid.querySelectorAll('.card'));
+
+            // Ordenação
+            const sortBy = sortSelect.value;
+            cards.sort((a, b) => {
+                if (sortBy === 'discount') {
+                    return parseFloat(b.dataset.discount) - parseFloat(a.dataset.discount);
+                } else if (sortBy === 'price-asc') {
+                    return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                } else {
+                    return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                }
+            });
+            cards.forEach(card => grid.appendChild(card));
+
+            // Filtro por loja + busca por nome
+            let visibleCount = 0;
+            cards.forEach(card => {
+                const matchesStore = currentFilter === 'all' || card.dataset.store === currentFilter;
+                const matchesSearch = card.dataset.title.includes(searchTerm);
+                const visible = matchesStore && matchesSearch;
+                card.style.display = visible ? '' : 'none';
+                if (visible) visibleCount++;
+            });
+            emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter = tab.dataset.filter;
+                applyFilterAndSort();
+            });
+        });
+
+        sortSelect.addEventListener('change', applyFilterAndSort);
+
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchDebounce);
+            searchDebounce = setTimeout(() => {
+                searchTerm = searchInput.value.trim().toLowerCase();
+                applyFilterAndSort();
+            }, 150);
+        });
+
+        applyFilterAndSort();
+    </script>
 </body>
 </html>

@@ -75,8 +75,9 @@ def fetch_all_deals():
 def build_html(deals, usd_to_brl):
     """Monta o HTML estático a partir da lista de jogos."""
     rows = ""
-    for deal in deals:
+    for idx, deal in enumerate(deals):
         title = deal.get("title", "Sem título")
+        title_attr = title.lower().replace('"', "&quot;")
         sale_price_usd = float(deal.get("salePrice", 0))
         normal_price_usd = float(deal.get("normalPrice", 0))
         savings = float(deal.get("savings", 0))
@@ -89,7 +90,7 @@ def build_html(deals, usd_to_brl):
         normal_price_brl = normal_price_usd * usd_to_brl
 
         rows += f"""
-        <div class="card" data-store="{store}" data-discount="{savings:.0f}" data-price="{sale_price_brl:.2f}">
+        <div class="card" data-store="{store}" data-discount="{savings:.0f}" data-price="{sale_price_brl:.2f}" data-title="{title_attr}" style="animation-delay: {idx * 0.03:.2f}s">
             <div class="thumb-wrap">
                 <img src="{thumb}" alt="{title}" loading="lazy">
                 <span class="badge">-{savings:.0f}%</span>
@@ -318,6 +319,43 @@ def build_html(deals, usd_to_brl):
         margin-top: 40px;
         display: none;
     }}
+    .search-wrap {{
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto 4px;
+        flex-basis: 100%;
+    }}
+    #search {{
+        width: 100%;
+        background: var(--card);
+        color: var(--text);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 10px 16px;
+        border-radius: 999px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95em;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }}
+    #search:focus {{
+        border-color: var(--accent);
+    }}
+    #search::placeholder {{
+        color: var(--muted);
+    }}
+    .card {{
+        opacity: 0;
+        animation: fadeInUp 0.5s ease forwards;
+    }}
+    @keyframes fadeInUp {{
+        from {{
+            opacity: 0;
+            transform: translateY(16px);
+        }}
+        to {{
+            opacity: 1;
+        }}
+    }}
 </style>
 </head>
 <body>
@@ -327,6 +365,9 @@ def build_html(deals, usd_to_brl):
     </header>
 
     <div class="controls">
+        <div class="search-wrap">
+            <input type="text" id="search" placeholder="Buscar jogo..." autocomplete="off">
+        </div>
         <button class="tab active" data-filter="all">Todas as lojas</button>
         {store_tabs}
         <div class="sort-wrap">
@@ -352,8 +393,11 @@ def build_html(deals, usd_to_brl):
         const grid = document.getElementById('grid');
         const tabs = document.querySelectorAll('.tab');
         const sortSelect = document.getElementById('sort');
+        const searchInput = document.getElementById('search');
         const emptyMsg = document.getElementById('empty-msg');
         let currentFilter = 'all';
+        let searchTerm = '';
+        let searchDebounce;
 
         function applyFilterAndSort() {{
             const cards = Array.from(grid.querySelectorAll('.card'));
@@ -371,12 +415,14 @@ def build_html(deals, usd_to_brl):
             }});
             cards.forEach(card => grid.appendChild(card));
 
-            // Filtro
+            // Filtro por loja + busca por nome
             let visibleCount = 0;
             cards.forEach(card => {{
-                const matches = currentFilter === 'all' || card.dataset.store === currentFilter;
-                card.style.display = matches ? '' : 'none';
-                if (matches) visibleCount++;
+                const matchesStore = currentFilter === 'all' || card.dataset.store === currentFilter;
+                const matchesSearch = card.dataset.title.includes(searchTerm);
+                const visible = matchesStore && matchesSearch;
+                card.style.display = visible ? '' : 'none';
+                if (visible) visibleCount++;
             }});
             emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
         }}
@@ -391,6 +437,14 @@ def build_html(deals, usd_to_brl):
         }});
 
         sortSelect.addEventListener('change', applyFilterAndSort);
+
+        searchInput.addEventListener('input', () => {{
+            clearTimeout(searchDebounce);
+            searchDebounce = setTimeout(() => {{
+                searchTerm = searchInput.value.trim().toLowerCase();
+                applyFilterAndSort();
+            }}, 150);
+        }});
 
         applyFilterAndSort();
     </script>

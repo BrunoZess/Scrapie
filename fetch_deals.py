@@ -1,44 +1,28 @@
-"""
-fetch_deals.py
-
-Busca os jogos em promoção usando a API gratuita da CheapShark e gera um arquivo index.html estático
-com a lista de ofertas, pronto para ser publicado no GitHub Pages.
-
-"""
-
 import requests
 from datetime import datetime
 
-# Endpoint da API que retorna as promoções
 API_URL = "https://www.cheapshark.com/api/1.0/deals"
-
-# Cotação do dólar
 EXCHANGE_API_URL = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
 
-# Loja buscada: apenas Steam 
 STORE_ID = 1
 STORE_NAME = "Steam"
 
-# Quantas páginas buscar
 PAGE_SIZE = 60
-NUM_PAGES = 4  
+NUM_PAGES = 4
 
-# Parâmetros comuns da busca
 BASE_PARAMS = {
     "storeID": STORE_ID,
-    "upperPrice": 60,    # preço máximo em dólar
+    "upperPrice": 60,
     "pageSize": PAGE_SIZE,
-    "sortBy": "Savings", # ordena pelo maior desconto
+    "sortBy": "Savings",
 }
 
 HEADERS = {
-    # A CheapShark exige um User-Agent descritivo nas requisições
     "User-Agent": "GameDealsSite/1.0 (github.com project; contato: lixoboey2@gmail.com)"
 }
 
 
 def fetch_exchange_rate():
-    """Busca a cotação atual do dólar em reais. Usa um valor de fallback se falhar."""
     try:
         response = requests.get(EXCHANGE_API_URL, headers=HEADERS, timeout=10)
         response.raise_for_status()
@@ -46,11 +30,10 @@ def fetch_exchange_rate():
         return float(data["USDBRL"]["bid"])
     except Exception as exc:
         print(f"Não foi possível buscar a cotação, usando valor de fallback. Erro: {exc}")
-        return 5.50  # valor aproximado de fallback
+        return 5.50
 
 
 def fetch_all_deals():
-    """Busca várias páginas de promoções da Steam na API"""
     all_deals = []
     seen_ids = set()
     for page in range(NUM_PAGES):
@@ -61,7 +44,7 @@ def fetch_all_deals():
         response.raise_for_status()
         page_deals = response.json()
         if not page_deals:
-            break  # acabaram os resultados
+            break
         for deal in page_deals:
             deal_id = deal.get("dealID")
             if deal_id and deal_id not in seen_ids:
@@ -72,7 +55,6 @@ def fetch_all_deals():
 
 
 def build_html(deals, usd_to_brl):
-    """Monta o HTML estático a partir da lista de jogos."""
     rows = ""
     for idx, deal in enumerate(deals):
         title = deal.get("title", "Sem título")
@@ -435,7 +417,6 @@ def build_html(deals, usd_to_brl):
         function applyFilterAndSort() {{
             const cards = Array.from(grid.querySelectorAll('.card'));
 
-            // Ordenação
             const sortBy = sortSelect.value;
             cards.sort((a, b) => {{
                 if (sortBy === 'discount') {{
@@ -450,7 +431,6 @@ def build_html(deals, usd_to_brl):
             }});
             cards.forEach(card => grid.appendChild(card));
 
-            // Busca por nome + filtro de famosos
             let visibleCount = 0;
             cards.forEach(card => {{
                 const matchesSearch = card.dataset.title.includes(searchTerm);
